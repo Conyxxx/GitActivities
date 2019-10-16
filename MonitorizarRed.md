@@ -1,10 +1,10 @@
-# Conocer comandos de SYSTEMCTL y NETSTAT 
+# Conocer comandos de SYSTEMCTL,NETSTAT,SSH y Journalctl
 ### Contenido
 1. **SYSTEMCTL**
 2. **NETSTAT**
 3. **SSH**
 4. **JOURNALCTL**
-
+<div style="text-align: justify">
 En este documento hablare sobre las opciones mas conocidas y mas usadas de systemctl,netstat y el famoso SSH.
 
 **SYSTEMCTL**
@@ -17,7 +17,7 @@ o por que pudo haber fallado.
 Verifica el estado de un servicio.
 -restart "nombre servicio"
 Reinicia el servicio.
-
+```
 **NETSTAT**
 Es una herramienta a traves de comandos, se utiliza mucho para ver, conocer y identificar los puertos que usan los programas.
 * Comandos mas usados
@@ -27,7 +27,7 @@ Es una herramienta a traves de comandos, se utiliza mucho para ver, conocer y id
     - l: se utiliza para ver los purtos de escucha
     - p: se usa para ver los procesos.
     - n: se usa para ver la IP que tal proceso usa.
-
+```
 **SSH**
 
 Cuando hablamos de SSH a todo el mundo nos viene a la cabeza las conexiones remotas.
@@ -53,5 +53,52 @@ archivo y escribimos lo siguiente.
 
 AllowUsers user1 user2 user3
 ```
+Ahora hay que configurar que root solo se pueda conectar con la clave instalada en el servidor.
+Para ello hay que hacer los siguientes pasos.
+
+Creamos una clave:
+```
+ssh-keygen -f clave
+la opcion -f es para especificar el nombre de archivo.
+cuando llega al apartado de la contraseña especificale una.
+```
+Una vez creado la clave ssh vamos a configurar el archivo sshd_config para decirle que haya autentificacion en el root.
+```
+nano /etc/ssh/sshd_config
+buscamos las lineas donde ponga lo siguiente.
+PasswordAuthentication yes
+PermitROOTLogin yes
+```
+Se reinicia el server
+```
+service ssh restart
+```
 **Journalctl**
 Es la herramienta que mas se usa para el ver los logs del sistema operativo
+Comandos mas utiles de este servicio.
+```
+journalctl -r
+Es para ver las entradas logs mas recientes
+```
+
+```
+journalctl -n 3
+Con la opcion -n se puede la cantidad de logs que hayas pasado
+```
+```
+journalctl -p [crit],[debug],[info],[warning],[err],[alert],[emerg]
+Eligiendo uno de los parametros podras ver todo servicio que tenga alomejor un error, o la informacion de algun servicio en concreto.
+```
+```
+journalctl -u [systemd_unit]
+Option que muestra las entradas log con una unidad especifica del sistema.
+```
+Ahora voy a explicar como exportar los logs de un servicio a formato json
+```
+journalctl -u [nombre servicio] -r -o json-pretty
+Example:
+journalctl -u ssh.service -r -o json-pretty
+```
+De esa manera nos mostrara los logs del servicio ssh en formato json.
+Y si queremos guardarlo en un archivo con hacerle una doble redireccion.
+</div>
