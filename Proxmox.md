@@ -106,3 +106,7 @@ Hay que hacer que pase todo el trafico por el router debian, sigamos los siguien
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -s '192.168.100.0/24' -o TARJETA_RED -j Masquerade
 ```
+### Crear el container
+Para crear el container hay que acceder a traves del navegador al servidor principal de proxmox, y arriba del todo estara el boton.
+
+Solo hay que seguir los pasos que nos indica y especificar donde queremos guardar el contenedor si bien en local o en uno de los nodos.
